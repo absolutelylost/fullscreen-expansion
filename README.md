@@ -8,7 +8,9 @@ To Use:
 Listed Configurations Commands
 
 Normal Display and Size:
-* C:\Projects\Delroy\Tools\fullscreen-expansion\build\debug\FullScreenExpansion chrome 100 100 1500 1000
+
+C:\Projects\Delroy\Tools\fullscreen-expansion\build\debug\FullScreenExpansion chrome 100 100 1500 1000
 
 Christie Wall:
-* C:\Projects\Delroy\Tools\fullscreen-expansion\build\debug\FullScreenExpansion chrome 3800 350 4850 4000
+
+C:\Projects\Delroy\Tools\fullscreen-expansion\build\debug\FullScreenExpansion chrome 3800 350 4850 4000
