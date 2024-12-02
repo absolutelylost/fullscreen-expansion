@@ -1,16 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Projects\Delroy\Tools\fullscreen-expansion\main.cpp">
+    <ClCompile Include="C:\Users\de509865\Documents\Tools\FullScreenExpansion\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\de509865\Documents\Tools\FullScreenExpansion\windowDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\de509865\Documents\Tools\FullScreenExpansion\readConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Projects\Delroy\Tools\fullscreen-expansion\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\de509865\Documents\Tools\FullScreenExpansion\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{D52D3013-339F-3608-A74F-CA51AFCF8732}</UniqueIdentifier>
+      <UniqueIdentifier>{A1490FC4-6502-305F-92BA-123226CF04B6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

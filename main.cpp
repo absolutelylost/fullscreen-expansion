@@ -1,78 +1,118 @@
-#include <windows.h>
+#define NOMINMAX // protects against discrepancy with max function in windows.h built in max()
 #include <iostream>
+#include <cstdlib> // for system() to clear the screen (optional)
+#include <limits>
+#include "headers/readConfig.hpp"
+#include "headers/windowDisplay.hpp"
 #include <string>
-#include <cctype>
-#include <algorithm>
-#include <cstdlib> // For std::stoi
 
-const char *searchSubstring;
-
-// Helper function to convert a string to lowercase
-void toLowerCase(std::string &str)
+using namespace std;
+namespace FullScreenDisplay
 {
-    std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c)
-                   { return std::tolower(c); });
-}
+    bool configRead = false;
 
-BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
-{
-    char windowTitle[256];
-    GetWindowTextA(hwnd, windowTitle, sizeof(windowTitle));
-
-    // Convert window title to lowercase for case-insensitive comparison
-    std::string titleLower(windowTitle);
-    toLowerCase(titleLower);
-
-    // Retrieve the search substring from the lParam (passed argument)
-    // const char *searchSubstring = reinterpret_cast<const char *>(lParam);
-
-    // Convert search substring to lowercase
-    std::string searchLower(searchSubstring);
-    toLowerCase(searchLower);
-
-    // Check if the window title contains the search substring (case-insensitive)
-    if (titleLower.find(searchLower) != std::string::npos)
+    void clearScreen()
     {
-        std::cout << "Found a window with title: " << windowTitle << std::endl;
-
-        // Get position and dimensions from lParam
-        int *params = reinterpret_cast<int *>(lParam);
-        int x = params[0];
-        int y = params[1];
-        int width = params[2];
-        int height = params[3];
-
-        // Move or resize the window as specified by the user
-        MoveWindow(hwnd, x, y, width, height, TRUE); // Example: Move and resize
+        system("cls");
     }
 
-    return TRUE; // Continue enumerating windows
-}
-
-int main(int argc, char *argv[])
-{
-    // Check if the user passed the search substring and window position/size arguments
-    if (argc != 6)
+    void displayMenu()
     {
-        std::cerr << "Usage: " << argv[0] << " <search-substring> <x> <y> <width> <height>" << std::endl;
-        return -1;
+        cout << "====================\n";
+        cout << "      Main Menu\n";
+        cout << "1. Full Screen Multi-Display\n";
+        cout << "2. Normal Monitor Display\n";
+        cout << "3. EXIT\n";
     }
 
-    // Get the search substring (e.g., "Notepad", "Chrome", etc.)
-    searchSubstring = argv[1];
+    void processRequest(int choice, string substring)
+    {
+        // if (!configRead)
 
-    // Get the position and dimensions
-    int x = std::stoi(argv[2]);
-    int y = std::stoi(argv[3]);
-    int width = std::stoi(argv[4]);
-    int height = std::stoi(argv[5]);
+        vector<int> configuration = readConfig(choice);
 
-    std::cout << "Searching for windows with titles containing: " << searchSubstring << std::endl;
-    std::cout << "Moving windows to (" << x << ", " << y << ") with size (" << width << "x" << height << ")" << std::endl;
+        if (configuration.size() == 0)
+        {
+            return;
+        }
 
-    // Pass the position and dimensions to the EnumWindowsProc callback function
-    int params[4] = {x, y, width, height};
-    EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(params));
+        char *c_substring = const_cast<char *>(substring.data()); //.c_str();
+        // configRead = true;
+        processWindowChanges(configuration, c_substring);
+    }
+
+    void handleSelection(int choice)
+    {
+        string substring;
+
+        switch (choice)
+        {
+        case 1:
+            std::cout << "Enter window name substring to be affected:";
+            std::getline(std::cin, substring); // Read full line of input, including spaces
+            // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore leftover newline character
+            processRequest(choice, substring);
+            cout << "Changing configuration for full screen display...\n";
+            break;
+        case 2:
+            std::cout << "Enter window name substring to be affected:";
+            std::getline(std::cin, substring); // Read full line of input, including spaces
+            // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore leftover newline character
+            processRequest(choice, substring);
+            cout << "Changing configuration to small monitor display\n";
+            break;
+        case 3:
+            cout << "Exiting...\n";
+            break;
+        default:
+            cout << "Invalid choice...\n";
+        }
+    }
+
+    int getValidInput(int min, int max)
+    {
+        int choice;
+        while (true)
+        {
+            cout << "Please select an option (" << min << "-" << max << "): ";
+
+            // check if the input is a valid integer value
+            if (cin >> choice && choice >= min && choice <= max)
+            {
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore leftover newline character
+                return choice;                                                 // valid input, return the choice
+            }
+            else
+            {
+                // handle invalid input
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid characters
+                cout << "Invalid input. Please enter a number between " << min << " and " << max << ".\n";
+            }
+        }
+    }
+
+}
+
+int main()
+{
+    int choice = 0;
+    do
+    {
+        FullScreenDisplay::clearScreen();
+        FullScreenDisplay::displayMenu();
+        // Get valid user input
+        choice = FullScreenDisplay::getValidInput(1, 3); // The options range from 1 to 4
+
+        FullScreenDisplay::handleSelection(choice);
+
+        if (choice != 3)
+        {
+            cout << "Press enter to continue...\n";
+            cin.ignore(); // leftover newline
+            cin.get();    // wait for the user to press enter
+        }
+
+    } while (choice != 3);
 
     return 0;
 }

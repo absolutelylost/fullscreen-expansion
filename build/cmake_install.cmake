@@ -1,4 +1,4 @@
-# Install script for directory: C:/Projects/Delroy/Tools/fullscreen-expansion
+# Install script for directory: C:/Users/de509865/Documents/Tools/FullScreenExpansion
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Projects/Delroy/Tools/fullscreen-expansion/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/de509865/Documents/Tools/FullScreenExpansion/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
